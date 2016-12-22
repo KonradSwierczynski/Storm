@@ -1,0 +1,27 @@
+version: '2'
+services:
+
+  backend:
+    build: ./backend
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./backend/sample:/sample
+    entrypoint: python3 -m sample.server
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    entrypoint: /app/run.sh
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    links:
+      - backend
+      - frontend
+    entrypoint: nginx
