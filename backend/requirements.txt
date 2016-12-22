@@ -1,2 +1,3 @@
 aiohttp
 aiohttp-autoreload
+mysql-connector

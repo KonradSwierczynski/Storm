@@ -1,4 +1,5 @@
 #!/bin/bash
-cd /app/src
-node server.js &
-npm start
+cd /app
+npm start &
+cd src
+node server.js
