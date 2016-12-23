@@ -15,10 +15,6 @@ mysql_config = {
 }
 
 
-async def hello(request):
-    return web.json_response("WORLD FROM BACKEND!")
-
-
 def connect_to_mysql():
     i = 1
     while True:
@@ -35,12 +31,30 @@ def connect_to_mysql():
         return cnx
 
 
+cnx = connect_to_mysql()
+
+
+def get_db_handle():
+    global cnx
+    return cnx
+
+
+async def hello(request):
+    sql = get_db_handle()
+    cursor = sql.cursor()
+    cursor.execute("SHOW TABLES")
+    result = [(i[0]).decode('utf-8') for i in cursor.fetchall()]
+    logging.info(result)
+    cursor.close()
+    return web.json_response(result)
+
+
 def init():
-    cnx = connect_to_mysql()
     app = web.Application()
     app.router.add_route('GET', '/', hello)
     logging.info("Backend server started")
     web.run_app(app)
+    logging.info("Closing connection")
     cnx.close()
 
 
