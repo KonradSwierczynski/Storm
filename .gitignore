@@ -15,6 +15,10 @@ frontend/node_modules
 # npm debug log
 frontend/npm-debug.log
 
+# npm build
+frontend/src/build
+frontend/src/build/*
+
 # vim .swp files
 *.swp
 *.swo

@@ -26,10 +26,16 @@ class TestComponent extends React.Component {
             <div>
                 <div>Hello {this.state.content}!</div>
                 <div id="testButton">
-                <button onClick={function() {
+                <button onClick={() => {
                     TestComponentActions.printNew("trololo");
                 }}>Click Me</button>
                 </div>
+                <input type="text" id="textTest" defaultValue="Enter here..."/>
+                <button onClick={() => {
+                    TestComponentActions.createTable(
+                        document.getElementById("textTest").value
+                    )
+                }}>Try Me</button>
             </div>
         );
     }

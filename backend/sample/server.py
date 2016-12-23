@@ -14,6 +14,8 @@ mysql_config = {
     'database': 'storm_database'
 }
 
+# TODO look for mysql-connection alternatives
+
 
 def connect_to_mysql():
     i = 1
@@ -44,14 +46,25 @@ async def hello(request):
     cursor = sql.cursor()
     cursor.execute("SHOW TABLES")
     result = [(i[0]).decode('utf-8') for i in cursor.fetchall()]
-    logging.info(result)
     cursor.close()
     return web.json_response(result)
+
+
+async def createTable(request):
+    sql = get_db_handle()
+    cur = sql.cursor()
+    await request.post()
+    logging.info(request.POST)
+    cur.execute("CREATE TABLE {} (val varchar(225))"
+                .format(request.POST['tableName']))
+    cur.close()
+    return web.json_response()
 
 
 def init():
     app = web.Application()
     app.router.add_route('GET', '/', hello)
+    app.router.add_route('POST', '/', createTable)
     logging.info("Backend server started")
     web.run_app(app)
     logging.info("Closing connection")
