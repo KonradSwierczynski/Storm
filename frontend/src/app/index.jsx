@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, Link, hashHistory } from 'react-router';
 
 import TestComponent from "./components/TestComponent.jsx";
+import Login from "./components/Login.jsx";
 
 class NotFound extends React.Component {
     render() {
@@ -15,9 +16,9 @@ class NotFound extends React.Component {
 }
 
 render ((
-    <Router history={browserHistory}>
-        <Route path="/" component={TestComponent}>
-            <Route path="*" component={NotFound}/>
-        </Route>
+    <Router history={hashHistory}>
+        <Route path="/" component={TestComponent}/>
+        <Route path="login" component={Login}/>
+        <Route path="*" component={NotFound}/>
     </Router>
 ), document.getElementById('root'))
