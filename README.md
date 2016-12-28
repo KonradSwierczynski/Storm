@@ -3,7 +3,7 @@ Project for Data Bases and Information Managements
 
 Installation guide:
 
-Step one: install docker
+Step one: install docker (and run it with sudo service docker start)
 Step two: install docker-compose
 
 

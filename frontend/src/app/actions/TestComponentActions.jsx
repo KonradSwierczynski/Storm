@@ -13,8 +13,7 @@ class TestComponentActions {
 
     createTable = (tableName) => {
         return (dispatch) => {
-            $.post("/api/", {"tableName": tableName}, (data) => {
-            });
+            $.post("/api/", {"tableName": tableName}, (data) => {});
         };
     };
 }
