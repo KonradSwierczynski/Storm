@@ -27,7 +27,7 @@ class Login extends React.Component {
                 <input type="text" id="loginField"/>
                 <input type="text" id="passwordField"/>
                 <button onClick={() => {
-                    LoginActions.validateCredentials(
+                    LoginActions.login(
                         document.getElementById("loginField").value,
                         document.getElementById("passwordField").value
                     )
@@ -37,10 +37,5 @@ class Login extends React.Component {
     }
 }
 
-function logoutIfNeeded(xhr) {
-    if (xhr.status === "403") {
-        LoginActions.logout();
-    }
-}
 
 export default Login;

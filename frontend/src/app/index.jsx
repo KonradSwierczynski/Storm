@@ -4,6 +4,7 @@ import { Router, Route, Link, hashHistory } from 'react-router';
 
 import App from "./components/App.jsx";
 import Login from "./components/Login.jsx";
+import LoginActions from "./actions/LoginActions.jsx";
 
 class NotFound extends React.Component {
     render() {
@@ -16,17 +17,12 @@ class NotFound extends React.Component {
 }
 
 function requireAuth(nextState, replace) {
+    LoginActions.checkIfLoggedIn();
     if (localStorage.getItem("loggedIn") !== "true") {
         replace({
             pathname: "login",
             state: { nextPathname: nextState.location.pathname }
         });
-    }
-}
-
-function logoutIfNeeded(xhr) {
-    if (xhr.status === "403") {
-        LoginActions.logout();
     }
 }
 

@@ -39,6 +39,9 @@ class App extends React.Component {
                         document.getElementById("textTest").value
                     )
                 }}>Try Me</button>
+                <button onClick={() => {
+                    LoginActions.logout();    
+                }}>Logout</button>
             </div>
         );
     }

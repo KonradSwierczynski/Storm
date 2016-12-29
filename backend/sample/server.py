@@ -30,8 +30,8 @@ async def createTable(cur, request):
     return web.json_response()
 
 db = {
-    'adam': 'pass',
-    'konrad': 'pass'
+    'adam': '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684',
+    'konrad': '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684'
 }
 
 
@@ -51,7 +51,7 @@ async def logout(request):
     return web.Response(body='OK'.encode('utf-8'))
 
 
-async def checkLogin(request):
+async def checkIfLoggedIn(request):
     user = await auth.get_auth(request)
     result = False if user is None else True
     return web.json_response(result)
@@ -64,7 +64,7 @@ def init():
     utils.connect_to_mysql()
     app.router.add_route('GET', '/', hello)
     app.router.add_route('POST', '/', createTable)
-    app.router.add_route('GET', '/check', checkLogin)
+    app.router.add_route('GET', '/check', checkIfLoggedIn)
     app.router.add_route('POST', '/login', login)
     app.router.add_route('POST', '/logout', logout)
     logging.info("Backend server started")
