@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, Link, hashHistory } from 'react-router';
 
-import TestComponent from "./components/TestComponent.jsx";
+import App from "./components/App.jsx";
 import Login from "./components/Login.jsx";
 
 class NotFound extends React.Component {
@@ -15,9 +15,24 @@ class NotFound extends React.Component {
     }
 }
 
+function requireAuth(nextState, replace) {
+    if (localStorage.getItem("loggedIn") !== "true") {
+        replace({
+            pathname: "login",
+            state: { nextPathname: nextState.location.pathname }
+        });
+    }
+}
+
+function logoutIfNeeded(xhr) {
+    if (xhr.status === "403") {
+        LoginActions.logout();
+    }
+}
+
 render ((
     <Router history={hashHistory}>
-        <Route path="/" component={TestComponent}/>
+        <Route path="/" component={App} onEnter={requireAuth}/>
         <Route path="login" component={Login}/>
         <Route path="*" component={NotFound}/>
     </Router>

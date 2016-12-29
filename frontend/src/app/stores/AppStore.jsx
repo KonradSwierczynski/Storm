@@ -1,12 +1,12 @@
 import alt from "../libs/Alt.js";
-import TestComponentActions from "../actions/TestComponentActions.jsx";
+import AppActions from "../actions/AppActions.jsx";
 
-class TestComponentStore {
+class AppStore {
     constructor() {
         this.state = {
             'content': "default"
         };
-        this.bindActions(TestComponentActions);
+        this.bindActions(AppActions);
     }
 
     printNew(content) {
@@ -16,4 +16,4 @@ class TestComponentStore {
     }
 }
 
-export default alt.createStore(TestComponentStore);
+export default alt.createStore(AppStore);

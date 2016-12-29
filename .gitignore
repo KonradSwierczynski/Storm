@@ -22,6 +22,7 @@ frontend/src/build/*
 # vim .swp files
 *.swp
 *.swo
+*.swn
 
 # python tmp files
 *.pyo

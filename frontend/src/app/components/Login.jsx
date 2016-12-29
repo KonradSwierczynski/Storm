@@ -37,4 +37,10 @@ class Login extends React.Component {
     }
 }
 
+function logoutIfNeeded(xhr) {
+    if (xhr.status === "403") {
+        LoginActions.logout();
+    }
+}
+
 export default Login;
