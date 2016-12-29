@@ -1,14 +1,16 @@
 import alt from "../libs/Alt.js";
 import $ from 'jquery';
 
-class TestComponentActions {
+import logoutIfNeeded from "../libs/LogoutIfNeeded.jsx";
+
+class AppActions {
 
     printNew = (content) => {
         return (dispatch) => {
-            $.get("/api/", (data) => {
-                dispatch(data);
-            });
-        }    
+            $.get("/api/")
+                .done((data) => { dispatch(data); })
+                .fail((xhr) => { logoutIfNeeded(xhr); });
+        };
     };
 
     createTable = (tableName) => {
@@ -19,4 +21,4 @@ class TestComponentActions {
 }
 
 
-export default alt.createActions(TestComponentActions);
+export default alt.createActions(AppActions);

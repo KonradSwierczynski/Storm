@@ -1,20 +1,23 @@
 import React from 'react';
-import TestComponentActions from "../actions/TestComponentActions.jsx";
-import TestComponentStore from "../stores/TestComponentStore.jsx";
+import { withRouter } from 'react-router';
+import AppActions from "../actions/AppActions.jsx";
+import AppStore from "../stores/AppStore.jsx";
 
-class TestComponent extends React.Component {
+import LoginActions from "../actions/LoginActions.jsx";
+
+class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = TestComponentStore.getState();
+        this.state = AppStore.getState();
     }
 
     componentDidMount() {
-        TestComponentStore.listen(this.onChange);
+        AppStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        TestComponentStore.unlisten(this.onChange);
+        AppStore.unlisten(this.onChange);
     }
 
     onChange = (newState) => {
@@ -27,18 +30,21 @@ class TestComponent extends React.Component {
                 <div>Hello {this.state.content}!</div>
                 <div id="testButton">
                 <button onClick={() => {
-                    TestComponentActions.printNew("trololo");
+                    AppActions.printNew("trololo");
                 }}>Click Me</button>
                 </div>
                 <input type="text" id="textTest" defaultValue="Enter here..."/>
                 <button onClick={() => {
-                    TestComponentActions.createTable(
+                    AppActions.createTable(
                         document.getElementById("textTest").value
                     )
                 }}>Try Me</button>
+                <button onClick={() => {
+                    LoginActions.logout();    
+                }}>Logout</button>
             </div>
         );
     }
 }
 
-export default TestComponent;
+export default withRouter(App);
