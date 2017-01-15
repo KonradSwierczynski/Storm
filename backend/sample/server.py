@@ -7,6 +7,7 @@ from os import urandom
 
 import logging
 import sample.utils as utils
+import sample.dbutils as dbutils
 
 logging.basicConfig(level=logging.DEBUG)
 aiohttp_autoreload.start()
@@ -66,6 +67,10 @@ def init():
     app.router.add_route('GET', '/check', checkIfLoggedIn)
     app.router.add_route('POST', '/login', login)
     app.router.add_route('POST', '/logout', logout)
+
+    # Players
+    app.router.add_route('GET', '/allplayers', dbutils.get_players)
+    app.router.add_route('POST', '/addplayer', dbutils.add_player)
     logging.info("Backend server started")
     web.run_app(app)
     logging.info("Closing connection")

@@ -1,8 +1,9 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { Router, Route, Link, hashHistory } from 'react-router';
+import React from "react";
+import { render } from "react-dom";
+import { Router, Route, Link, hashHistory } from "react-router";
 
 import App from "./components/App.jsx";
+import NewPlayer from "./components/NewPlayer.jsx";
 import Login from "./components/Login.jsx";
 import LoginActions from "./actions/LoginActions.jsx";
 
@@ -24,6 +25,7 @@ render ((
     <Router history={hashHistory}>
         <Route path="/" component={App} onEnter={requireAuth}/>
         <Route path="login" component={Login}/>
+        <Route path="newplayer" component={NewPlayer}/>
         <Route path="*" component={NotFound}/>
     </Router>
-), document.getElementById('root'))
+), document.getElementById("root"))

@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import AppActions from "../actions/AppActions.jsx";
 import AppStore from "../stores/AppStore.jsx";
+import NewPlayer from "./NewPlayer.jsx";
+import AllPlayers from "./AllPlayers.jsx"
 
 import LoginActions from "../actions/LoginActions.jsx";
 
@@ -42,6 +44,17 @@ class App extends React.Component {
                 <button onClick={() => {
                     LoginActions.logout();    
                 }}>Logout</button>
+                <div>
+                    <button onClick={ () => { AppActions.setAddPlayer(true); }}>AddPlayer</button>
+                    { this.state.add_player && <NewPlayer /> }
+                </div>
+                <div>
+                    <button onClick={() => {
+                        AppActions.getPlayers();
+                        AppActions.setShowPlayers(true);
+                    }}>Show all players</button>
+                    { this.state.show_players && <AllPlayers /> }
+                </div>
             </div>
         );
     }
