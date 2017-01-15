@@ -18,12 +18,6 @@ class NotFound extends React.Component {
 
 function requireAuth(nextState, replace) {
     LoginActions.checkIfLoggedIn();
-    if (localStorage.getItem("loggedIn") !== "true") {
-        replace({
-            pathname: "login",
-            state: { nextPathname: nextState.location.pathname }
-        });
-    }
 }
 
 render ((

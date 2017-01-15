@@ -22,8 +22,10 @@ class LoginActions {
                 .done((data) => {
                     if (data === true)
                         localStorage.setItem("loggedIn", true);
-                    else
+                    else {
                         localStorage.setItem("loggedIn", undefined);
+                        hashHistory.push("login");
+                    }
                 });
         }
     }

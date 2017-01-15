@@ -38,8 +38,7 @@ db = {
 async def login(request):
     params = await request.post()
     user = params.get('username', None)
-    if (user in db and
-            params.get('password', None) == db[user]):
+    if (user in db and params.get('password', None) == db[user]):
         await auth.remember(request, user)
         return web.Response(body='OK'.encode('utf-8'))
     raise web.HTTPForbidden()

@@ -21,17 +21,22 @@ class Login extends React.Component {
         this.setState(newState);
     };
 
+    login = () => {
+        LoginActions.login(
+            document.getElementById("loginField").value,
+            document.getElementById("passwordField").value
+        )
+    }
+
     render() {
         return (
-            <div>
+            <div onKeyDown={(e) => {
+                if (e.key == "Enter")
+                    this.login();
+            }}>
                 <input type="text" id="loginField"/>
-                <input type="text" id="passwordField"/>
-                <button onClick={() => {
-                    LoginActions.login(
-                        document.getElementById("loginField").value,
-                        document.getElementById("passwordField").value
-                    )
-                }}>Login</button>
+                <input type="password" id="passwordField" />
+                <button onClick={ this.login }>Login</button>
             </div>
         );
     }
