@@ -55,11 +55,32 @@ class AppActions {
         };
     };
 
+    newReferee = (name, surname, dateOfBirth, nationality, category) => {
+        return (dispatch) => {
+            $.post("/api/addreferee",
+                {
+                    "name": name,
+                    "surname": surname,
+                    "dateOfBirth": dateOfBirth,
+                    "nationality": nationality,
+                    "category": category
+                })
+                .done((data) => {})
+                .fail(logoutIfNeeded);
+        }
+    }
+
     loadRefereesStats = () => {
         return (dispatch) => {
             $.get("/api/stats/referees")
                 .done((referees) => {dispatch(referees); })
                 .fail(logoutIfNeeded);
+        }
+    }
+
+    setAddReferee = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
         }
     }
 

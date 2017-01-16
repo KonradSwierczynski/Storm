@@ -1,3 +1,4 @@
+import logging
 from aiohttp import web
 from aiohttp_auth import auth
 
@@ -27,20 +28,47 @@ async def get_referees_stats(cur, request):
 
 @auth.auth_required
 @utils.mysql_connection
+async def add_referee(cur, request):
+    await request.post()
+    try:
+        input_dict = {
+            'name': request.POST['name'],
+            'surname': request.POST['surname'],
+            'dateOfBirth': request.POST['dateOfBirth'],
+            'nationality': request.POST['nationality'],
+            'category': request.POST['category']
+        }
+    except KeyError:
+        raise web.HTTPBadRequest()
+    await insert_into(cur, "Referee", input_dict)
+    return web.json_response({})
+
+
+@auth.auth_required
+@utils.mysql_connection
 async def add_player(cur, request):
     await request.post()
     try:
-        name = request.POST['name']
-        surname = request.POST['surname']
-        dateOfBirth = request.POST['dateOfBirth']
-        nationality = request.POST['nationality']
-        playingPosition = request.POST['playingPosition']
+        input_dict = {
+            'name': request.POST['name'],
+            'surname': request.POST['surname'],
+            'dateOfBirth': request.POST['dateOfBirth'],
+            'nationality': request.POST['nationality'],
+            'playingPosition': request.POST['playingPosition']
+
+        }
     except KeyError:
         raise web.HTTPBadRequest()
-    dbquery = ('INSERT INTO Footballer '
-               + '(dateOfBirth, nationality, name, surname, playingPosition) '
-               + 'VALUES ("{}", "{}", "{}", "{}", "{}")'
-               .format(dateOfBirth, nationality, name,
-                       surname, playingPosition))
-    cur.execute(dbquery)
+    await insert_into(cur, "Footballer", input_dict)
     return web.json_response({})
+
+
+async def insert_into(cur, table, input_dict):
+    dbquery = ('INSERT INTO {} ({}) VALUES ({})'.
+               format(table,
+                      ', '.join(['{}'.format(col)
+                                for col in list(input_dict.keys())]),
+                      ', '.join(['"{}"'.format(val)
+                                for val in list(input_dict.values())])))
+    logging.info(dbquery)
+    cur.execute(dbquery)
