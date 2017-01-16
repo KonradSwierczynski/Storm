@@ -1,12 +1,14 @@
 USE storm_database;
 
-DROP PROCEDURE IF EXISTS StatisticsOfFootballer;
+DROP PROCEDURE IF EXISTS StatisticsOfFootballer;	
 DROP PROCEDURE IF EXISTS StatisticsOfClub;
 DROP PROCEDURE IF EXISTS StatisticsOfReferee;
 DROP PROCEDURE IF EXISTS StatisticsOfLeague;
 DROP PROCEDURE IF EXISTS StatisticsOfLeagueInSezon;
 DROP PROCEDURE IF EXISTS CreateGame;
 DROP PROCEDURE IF EXISTS DeleteGame;
+DROP PROCEDURE IF EXISTS PlayersInClub;
+DROP PROCEDURE IF EXISTS CreateClub;
 
 delimiter //
 
@@ -39,6 +41,7 @@ BEGIN
         
 END;//
 
+
 CREATE PROCEDURE CreateGame(in firstTeam varchar(225), in secoundTeam varchar(225),
 	in sezonYear YEAR, in sezonRound varchar(225), in refereeName varchar(225), in refereeSurname varchar(225), in stadiumName varchar(225), in gameDate DATE)
 BEGIN
@@ -55,6 +58,7 @@ BEGIN
     INSERT INTO FootballGame (club1Id, club2Id, sezonId, refereeId, stadiumId, date) VALUES
     (club1, club2, sezon, referee, stadium, gameDate);
 END;//
+
 
 CREATE PROCEDURE StatisticsOfFootballer(in selectedName varchar(225), in selectedSurname varchar(225))
 BEGIN
@@ -75,6 +79,17 @@ BEGIN
     
 END;//
 
+
+CREATE PROCEDURE CreateClub(in clubName varchar(225), in leagueName varchar(225),
+	in fundation YEAR, in city varchar(225), in budget int)
+BEGIN
+	DECLARE league int;
+    SET league = (SELECT League.id FROM League WHERE League.name = leagueName LIMIT 1);
+    INSERT INTO Club (leagueId, fundationYear, name, city, budget) VALUES
+    (league, fundation, clubName, city, budget);
+END;//
+
+
 CREATE PROCEDURE StatisticsOfClub(in selectedName varchar(225))
 BEGIN
 SELECT Club.name, Club.city, Club.budget,League.name, COALESCE(SUM(Statistics.goals), 0) AS Goals, 
@@ -87,6 +102,7 @@ SELECT Club.name, Club.city, Club.budget,League.name, COALESCE(SUM(Statistics.go
     GROUP BY Club.id
     ORDER BY Goals DESC;
 END;//
+
 
 CREATE PROCEDURE StatisticsOfReferee(in selectedName varchar(225), in selectedSurname varchar(225))
 BEGIN
@@ -109,6 +125,16 @@ SELECT Club.name, Club.city, Club.budget,League.name, COALESCE(SUM(Statistics.go
     WHERE League.name = selectedName
     GROUP BY Club.id
     ORDER BY Goals DESC;
+END;//
+
+
+CREATE PROCEDURE PlayersInClub(in selectedName varchar(225))
+BEGIN
+SELECT Footballer.name, Footballer.surname
+	FROM Footballer
+    INNER JOIN Club
+    INNER JOIN FootballerInClub ON Club.Id = FootballerInClub.clubId AND Footballer.id = FootballerInClub.footballerId
+    WHERE Club.name = selectedName;
 END;//
 
 CREATE PROCEDURE StatisticsOfLeagueInSezon(in selectedName varchar(225), in selectedYear YEAR, in selectedRound nvarchar(225))

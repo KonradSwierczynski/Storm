@@ -64,7 +64,8 @@ CREATE TABLE League
 	id int NOT NULL AUTO_INCREMENT,
 	country nvarchar(225),
 	name nvarchar(225),
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+    UNIQUE (name)
 );
 
 DROP TABLE IF EXISTS Club;
@@ -77,7 +78,8 @@ CREATE TABLE Club
 	city nvarchar(225) NOT NULL,
 	budget int NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (leagueId) REFERENCES League(id) ON DELETE CASCADE
+	FOREIGN KEY (leagueId) REFERENCES League(id) ON DELETE CASCADE,
+    UNIQUE (name)
 );
 
 DROP TABLE IF EXISTS Stadium;
@@ -86,7 +88,8 @@ CREATE TABLE Stadium
 	id int NOT NULL AUTO_INCREMENT,
 	name nvarchar(225) NOT NULL,
 	city nvarchar(225) NOT NULL,
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+    UNIQUE (name)
 );
 
 DROP TABLE IF EXISTS FootballGame;
