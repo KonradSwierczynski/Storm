@@ -6,6 +6,7 @@ class AppStore {
         this.state = {
             "content": "default",
             "add_player": false,
+            "add_referee": false,
             "show_players": false,
             "show_referees_stats": false,
             "players": "",
@@ -29,6 +30,12 @@ class AppStore {
     setAddPlayer(bool) {
         var s = this.state;
         s.add_player = bool;
+        this.setState(s);
+    }
+
+    setAddReferee(bool) {
+        var s = this.state;
+        s.add_referee = bool;
         this.setState(s);
     }
 

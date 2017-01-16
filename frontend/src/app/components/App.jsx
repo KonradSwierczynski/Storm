@@ -5,6 +5,7 @@ import AppStore from "../stores/AppStore.jsx";
 import NewPlayer from "./NewPlayer.jsx";
 import AllPlayers from "./AllPlayers.jsx"
 import RefereesStats from "./RefereesStats.jsx";
+import NewReferee from "./NewReferee.jsx";
 
 import LoginActions from "../actions/LoginActions.jsx";
 
@@ -45,8 +46,9 @@ class App extends React.Component {
                 <button onClick={() => {
                     LoginActions.logout();    
                 }}>Logout</button>
+                <h2>Players</h2>
                 <div>
-                    <button onClick={ () => { AppActions.setAddPlayer(true); }}>AddPlayer</button>
+                    <button onClick={ () => { AppActions.setAddPlayer(true); }}>Add Player</button>
                     { this.state.add_player && <NewPlayer /> }
                 </div>
                 <div>
@@ -57,6 +59,11 @@ class App extends React.Component {
                     { this.state.show_players && <AllPlayers /> }
                 </div>
 
+                <h2>Referees</h2>
+                <div>
+                    <button onClick={() => { AppActions.setAddReferee(true); }}>Add Referee</button>
+                    { this.state.add_referee && <NewReferee /> }
+                </div>
                 <div>
                     <button onClick={() => {
                         AppActions.loadRefereesStats();

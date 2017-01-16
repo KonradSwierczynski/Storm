@@ -72,9 +72,9 @@ def init():
     app.router.add_route('GET', '/allplayers', dbutils.get_players)
     app.router.add_route('POST', '/addplayer', dbutils.add_player)
 
-
-    # Stats
+    # Referee
     app.router.add_route('GET', '/stats/referees', dbutils.get_referees_stats)
+    app.router.add_route('POST', '/addreferee', dbutils.add_referee)
 
     logging.info("Backend server started")
     web.run_app(app)
