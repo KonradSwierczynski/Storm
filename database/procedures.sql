@@ -3,6 +3,8 @@ USE storm_database;
 DROP PROCEDURE IF EXISTS StatisticsOfFootballer;
 DROP PROCEDURE IF EXISTS StatisticsOfClub;
 DROP PROCEDURE IF EXISTS StatisticsOfReferee;
+DROP PROCEDURE IF EXISTS StatisticsOfLeague;
+DROP PROCEDURE IF EXISTS StatisticsOfLeagueInSezon;
 
 delimiter //
 
@@ -45,6 +47,33 @@ SELECT Referee.name, Referee.surname, Referee.category, Referee.dateOfBirth AS '
     WHERE Referee.name = selectedName AND Referee.surname = selectedSurname
     GROUP BY Referee.id
     ORDER BY Matches DESC;
+END;//
+
+CREATE PROCEDURE StatisticsOfLeague(in selectedName varchar(225))
+BEGIN
+SELECT Club.name, Club.city, Club.budget,League.name, SUM(Statistics.goals) AS Goals, 
+	SUM(Statistics.redCards) AS 'Red Cards', SUM(Statistics.yellowCards) AS 'Yellow Cards'
+    FROM Club
+    LEFT JOIN FootballerInClub ON Club.id = FootballerInClub.clubId
+    LEFT JOIN Statistics ON FootballerInClub.footballerId = Statistics.footballerId
+    INNER JOIN League ON Club.leagueId = League.id
+    WHERE League.name = selectedName
+    GROUP BY Club.id
+    ORDER BY Goals DESC;
+END;//
+
+CREATE PROCEDURE StatisticsOfLeagueInSezon(in selectedName varchar(225), in selectedYear YEAR, in selectedRound nvarchar(225))
+BEGIN
+SELECT Club.name, Club.city, Club.budget,League.name, SUM(Statistics.goals) AS Goals, 
+	SUM(Statistics.redCards) AS 'Red Cards', SUM(Statistics.yellowCards) AS 'Yellow Cards'
+    FROM Club
+    INNER JOIN Sezon
+    LEFT JOIN FootballerInClub ON Club.id = FootballerInClub.clubId AND FootballerInClub.sezonId = Sezon.id
+    LEFT JOIN Statistics ON FootballerInClub.footballerId = Statistics.footballerId
+    INNER JOIN League ON Club.leagueId = League.id
+    WHERE League.name = selectedName AND Sezon.round = selectedRound AND Sezon.year = selectedYear
+    GROUP BY Club.id
+    ORDER BY Goals DESC;
 END;//
 
 
