@@ -23,7 +23,22 @@ async def get_players(cur, request):
 @utils.mysql_connection
 async def get_clubs_stats(cur, request):
     cur.execute("SELECT * FROM StatisticsOfClubs")
-    return web.json_response(cur.fetchall())
+    result = cur.fetchall()
+    result = [
+        [entry[0]] + [int(entry[i]) for i in range(1, 4)]
+        for entry in result]
+    return web.json_response(result)
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def get_single_club_info(cur, request):
+    club_name = request.match_info['club']
+    cur.callproc("StatisticsOfClub", [club_name])
+    result = []
+    for r in cur.stored_results():
+        result += r.fetchall()
+    return web.json_response(result)
 
 
 @auth.auth_required

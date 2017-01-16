@@ -103,6 +103,12 @@ class AppActions {
             dispatch(bool);
         }
     }
+
+    setShowGetClubInfo = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
 }
 
 

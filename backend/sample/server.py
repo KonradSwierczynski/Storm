@@ -78,6 +78,7 @@ def init():
 
     # Clubs
     app.router.add_route('GET', '/stats/clubs', dbutils.get_clubs_stats)
+    app.router.add_route('GET', '/club/{club}', dbutils.get_single_club_info)
 
     logging.info("Backend server started")
     web.run_app(app)
