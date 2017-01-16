@@ -4,6 +4,29 @@ import { withRouter } from "react-router";
 import AppStore from "../stores/AppStore.jsx";
 
 
+
+var PlayerItem = React.createClass({
+    render() {
+        return <td>{this.props.item}</td>;
+    }
+});
+
+var PlayerRow = React.createClass({
+    render() {
+        var p = this.props.items;
+        var key = this.props.pkey;
+        return (
+            <tr>
+                <PlayerItem key={"name"+key} item={p.name}/>
+                <PlayerItem key={"surname"+key} item={p.surname}/>
+                <PlayerItem key={"nationality"+key} item={p.nationality}/>
+                <PlayerItem key={"playingPosition"+key} item={p.playingPosition}/>
+                <PlayerItem key={"dateOfBirth"+key} item={p.dateOfBirth}/>
+            </tr>
+        );
+    }
+});
+
 class AllPlayers extends React.Component {
     constructor(props) {
         super(props);
@@ -11,18 +34,31 @@ class AllPlayers extends React.Component {
 
     render() {
         var players = AppStore.getState().players;
-        console.log("PLAYERS: ", players); 
-        var indents = [];
-        if (players.length === 0)
-            indents.push(<span className='indent' key={-1}>There are no players available<br /></span>)
-        else
-            indents.push(<span className='indent' key={-1}>All available players are:<br /></span>)
+        var rows = [];
+        var header = null;
+
+        if (players.length === 0) 
+            return( <span><br />There are no players available :(</span> );
+        else header = <span>Table of all available players:</span>;
+        var titleRow = {
+            "name": "Name",
+            "surname": "Surname",
+            "nationality": "Nationality",
+            "playingPosition": "Position",
+            "dateOfBirth": "Birth date"
+        }
+        rows.push(<PlayerRow key={"titleRow"} items={titleRow} pkey={-1} />);
         for (var i = 0; i < players.length; i++) {
-            indents.push(<span className='indent' key={i}>{players[i].name}, {players[i].surname}, {players[i].nationality}, {players[i].playingPosition}, {players[i].dateOfBirth}<br /></span>)
+            rows.push(<PlayerRow key={"p"+i} items={players[i]} pkey={i} />);
         }
         return (
             <div>
-                {indents}
+                {header}
+                <table>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
             </div>
         );
     }
