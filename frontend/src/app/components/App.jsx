@@ -4,6 +4,7 @@ import AppActions from "../actions/AppActions.jsx";
 import AppStore from "../stores/AppStore.jsx";
 import NewPlayer from "./NewPlayer.jsx";
 import AllPlayers from "./AllPlayers.jsx"
+import RefereesStats from "./RefereesStats.jsx";
 
 import LoginActions from "../actions/LoginActions.jsx";
 
@@ -54,6 +55,14 @@ class App extends React.Component {
                         AppActions.setShowPlayers(true);
                     }}>Show all players</button>
                     { this.state.show_players && <AllPlayers /> }
+                </div>
+
+                <div>
+                    <button onClick={() => {
+                        AppActions.loadRefereesStats();
+                        AppActions.setShowRefereesStats(true);
+                    }}>Show referees stats</button>
+                    { this.state.show_referees_stats && <RefereesStats /> }
                 </div>
             </div>
         );

@@ -20,6 +20,13 @@ async def get_players(cur, request):
 
 @auth.auth_required
 @utils.mysql_connection
+async def get_referees_stats(cur, request):
+    cur.execute("SELECT * FROM StatisticsOfReferees")
+    return web.json_response(cur.fetchall())
+
+
+@auth.auth_required
+@utils.mysql_connection
 async def add_player(cur, request):
     await request.post()
     try:

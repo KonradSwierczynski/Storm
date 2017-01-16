@@ -71,6 +71,11 @@ def init():
     # Players
     app.router.add_route('GET', '/allplayers', dbutils.get_players)
     app.router.add_route('POST', '/addplayer', dbutils.add_player)
+
+
+    # Stats
+    app.router.add_route('GET', '/stats/referees', dbutils.get_referees_stats)
+
     logging.info("Backend server started")
     web.run_app(app)
     logging.info("Closing connection")

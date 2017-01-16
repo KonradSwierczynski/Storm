@@ -7,7 +7,9 @@ class AppStore {
             "content": "default",
             "add_player": false,
             "show_players": false,
-            "players": ""
+            "show_referees_stats": false,
+            "players": "",
+            "referees_stats": null
         };
         this.bindActions(AppActions);
     }
@@ -21,7 +23,6 @@ class AppStore {
     getPlayers(players) {
         var s = this.state;
         s.players = players;
-        console.log(s.players);
         this.setState(s);
     }
 
@@ -31,9 +32,22 @@ class AppStore {
         this.setState(s);
     }
 
+
     setShowPlayers(bool) {
         var s = this.state;
         s.show_players = bool;
+        this.setState(s);
+    }
+
+    loadRefereesStats(referees) {
+        var s = this.state;
+        s.referees_stats = referees;
+        this.setState(s);
+    }
+
+    setShowRefereesStats(bool) {
+        var s = this.state;
+        s.show_referees_stats = bool;
         this.setState(s);
     }
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 
+import AppActions from "../actions/AppActions.jsx";
 import AppStore from "../stores/AppStore.jsx";
 
 
@@ -59,6 +60,7 @@ class AllPlayers extends React.Component {
                         {rows}
                     </tbody>
                 </table>
+                <button onClick={() => { AppActions.setShowPlayers(false); }}>Close</button>
             </div>
         );
     }

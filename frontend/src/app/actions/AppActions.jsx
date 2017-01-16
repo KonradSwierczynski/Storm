@@ -54,6 +54,20 @@ class AppActions {
                 
         };
     };
+
+    loadRefereesStats = () => {
+        return (dispatch) => {
+            $.get("/api/stats/referees")
+                .done((referees) => {dispatch(referees); })
+                .fail(logoutIfNeeded);
+        }
+    }
+
+    setShowRefereesStats = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
 }
 
 

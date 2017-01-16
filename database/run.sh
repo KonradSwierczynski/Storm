@@ -2,8 +2,7 @@
 
 cd /db
 service mysql start
-cat tables.sql > bundle.sql
-mysql --user=root < init.sql
+cat init.sql tables.sql initdata.sql views.sql > bundle.sql
 
 mysql --user=root < bundle.sql
 
