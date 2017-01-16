@@ -89,6 +89,20 @@ class AppActions {
             dispatch(bool);
         }
     }
+
+    loadClubsStats = () => {
+        return (dispatch) => {
+            $.get("/api/stats/clubs")
+                .done((clubs) => {dispatch(clubs); })
+                .fail(logoutIfNeeded);
+        };
+    }
+
+    setShowClubsStats = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
 }
 
 

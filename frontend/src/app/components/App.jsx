@@ -2,9 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import AppActions from "../actions/AppActions.jsx";
 import AppStore from "../stores/AppStore.jsx";
+
 import NewPlayer from "./NewPlayer.jsx";
 import AllPlayers from "./AllPlayers.jsx"
 import RefereesStats from "./RefereesStats.jsx";
+import ClubsStats from "./ClubsStats.jsx";
 import NewReferee from "./NewReferee.jsx";
 
 import LoginActions from "../actions/LoginActions.jsx";
@@ -70,6 +72,19 @@ class App extends React.Component {
                         AppActions.setShowRefereesStats(true);
                     }}>Show referees stats</button>
                     { this.state.show_referees_stats && <RefereesStats /> }
+                </div>
+                <h2>Clubs</h2>
+                <div>
+                    <button onClick={() => {
+                        AppActions.loadClubsStats();
+                        AppActions.setShowClubsStats(true);
+                    }}>Show clubs stats</button>
+                    { this.state.show_clubs_stats && <ClubsStats clubs={this.state.clubs_stats} /> }
+                </div>
+                <div>
+                    <button onClick={() => {
+                        AppActions.setShowGetClubInfo(true);
+                    }}>Show single club info</button>
                 </div>
             </div>
         );
