@@ -8,8 +8,10 @@ class AppStore {
             "add_player": false,
             "add_referee": false,
             "show_players": false,
+            "show_clubs_stats": false,
             "show_referees_stats": false,
-            "players": "",
+            "players": null,
+            "clubs_stats": null,
             "referees_stats": null
         };
         this.bindActions(AppActions);
@@ -46,6 +48,12 @@ class AppStore {
         this.setState(s);
     }
 
+    loadClubsStats(clubs) {
+        var s = this.state;
+        s.clubs_stats = clubs;
+        this.setState(s);
+    }
+
     loadRefereesStats(referees) {
         var s = this.state;
         s.referees_stats = referees;
@@ -55,6 +63,12 @@ class AppStore {
     setShowRefereesStats(bool) {
         var s = this.state;
         s.show_referees_stats = bool;
+        this.setState(s);
+    }
+
+    setShowClubsStats(bool) {
+        var s = this.state;
+        s.show_clubs_stats = bool;
         this.setState(s);
     }
 }
