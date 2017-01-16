@@ -5,8 +5,26 @@ DROP PROCEDURE IF EXISTS StatisticsOfClub;
 DROP PROCEDURE IF EXISTS StatisticsOfReferee;
 DROP PROCEDURE IF EXISTS StatisticsOfLeague;
 DROP PROCEDURE IF EXISTS StatisticsOfLeagueInSezon;
+DROP PROCEDURE IF EXISTS CreateGame;
 
 delimiter //
+
+CREATE PROCEDURE CreateGame(in firstTeam varchar(225), in secoundTeam varchar(225),
+	in sezonYear YEAR, in sezonRound varchar(225), in refereeName varchar(225), in refereeSurname varchar(225), in stadiumName varchar(225), in gameDate DATE)
+BEGIN
+	DECLARE club1 int;
+    DECLARE club2 int;
+    DECLARE sezon int;
+    DECLARE referee int;
+    DECLARE stadium int;
+    SET club1 = (SELECT Club.id FROM Club WHERE Club.name = firstTeam);
+    SET club2 = (SELECT Club.id FROM Club WHERE Club.name = secoundTeam);
+    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear);
+    SET referee = (SELECT Referee.id FROM Referee WHERE Referee.name = refereeName AND Referee.surname = refereeSurname);
+    SET stadium = (SELECT Stadium.id FROM Stadium WHERE Stadium.name = stadiumName);
+    INSERT INTO FootballGame (club1Id, club2Id, sezonId, refereeId, stadiumId, date) VALUES
+    (club1, club2, sezon, referee, stadium, gameDate);
+END;//
 
 CREATE PROCEDURE StatisticsOfFootballer(in selectedName varchar(225), in selectedSurname varchar(225))
 BEGIN

@@ -18,7 +18,8 @@ BEGIN
 		IF done THEN
 			LEAVE create_statisctics;
 		END IF;
-		INSERT INTO Statistics (footballerId, gameId)  VALUES (cursor_FootblrId, NEW.id);
+		INSERT INTO Statistics (footballerId, gameId, goals, redCards, yellowCards, passes, assists, ownGoals)  VALUES 
+        (cursor_FootblrId, NEW.id, 0, 0, 0, 0, 0, 0);
 	END LOOP;
 	CLOSE cursor_i;
 END;//
