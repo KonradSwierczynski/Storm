@@ -8,6 +8,7 @@ import AllPlayers from "./AllPlayers.jsx"
 import RefereesStats from "./RefereesStats.jsx";
 import ClubsStats from "./ClubsStats.jsx";
 import NewReferee from "./NewReferee.jsx";
+import SingleClubInfo from "./SingleClubInfo.jsx";
 
 import LoginActions from "../actions/LoginActions.jsx";
 
@@ -85,6 +86,7 @@ class App extends React.Component {
                     <button onClick={() => {
                         AppActions.setShowGetClubInfo(true);
                     }}>Show single club info</button>
+                    { this.state.show_club_info && <SingleClubInfo /> }
                 </div>
             </div>
         );

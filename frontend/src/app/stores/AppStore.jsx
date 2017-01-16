@@ -9,6 +9,7 @@ class AppStore {
             "add_referee": false,
             "show_players": false,
             "show_clubs_stats": false,
+            "show_club_info": false,
             "show_referees_stats": false,
             "players": null,
             "clubs_stats": null,
@@ -69,6 +70,12 @@ class AppStore {
     setShowClubsStats(bool) {
         var s = this.state;
         s.show_clubs_stats = bool;
+        this.setState(s);
+    }
+
+    setShowGetClubInfo(bool) {
+        var s = this.state;
+        s.show_club_info = bool;
         this.setState(s);
     }
 }
