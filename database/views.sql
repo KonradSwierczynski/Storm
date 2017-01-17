@@ -1,5 +1,14 @@
 USE storm_database;
 
+DROP VIEW IF EXISTS StatisticsOfLeagues;
+CREATE VIEW StatisticsOfLeagues AS
+SELECT League.name, League.country, COUNT(Club.id) AS 'Number of clubs'
+	FROM League
+    INNER JOIN Club ON League.id = Club.leagueId
+    GROUP BY League.id
+    ORDER BY League.country, 'Numbre of clubs' DESC;
+	
+
 DROP VIEW IF EXISTS StatisticsOfStadiums;
 CREATE VIEW StatisticsOfStadiums AS
 SELECT Stadium.name, Stadium.city, COUNT(FootballGame.id) AS 'Numbre of matches'
