@@ -17,6 +17,19 @@ class ClubActions {
     setInitialState = () => {
         return (dispatch) => { dispatch(); }
     }
+
+    addNewClub = (name, league, fYear, city, budget) => {
+        return (dispatch) => {
+            $.post("/api/add/club", {
+                "name": name,
+                "league": league,
+                "foundation": fYear,
+                "city": city,
+                "budget": budget
+            })
+            .fail(logoutIfNeeded);
+        }
+    }
 }
 
 export default alt.createActions(ClubActions);
