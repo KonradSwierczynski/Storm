@@ -11,8 +11,40 @@ DROP PROCEDURE IF EXISTS PlayersInClub;					# PlayersInClub(in selectedName varc
 DROP PROCEDURE IF EXISTS CreateClub;					# CreateClub(in clubName varchar(225), in leagueName varchar(225), in fundation YEAR, in city varchar(225), in budget int)
 DROP PROCEDURE IF EXISTS FootballGames;					# FootballGames()
 DROP PROCEDURE IF EXISTS UpdateFootballerInClub;		# UpdateFootballerInClub(in fotballerName varchar(225), in fotballerSurname varchar(225), in clubName varchar(225),  in selectedYear YEAR, in selectedRound nvarchar(225), in newContractTo DATE, in newSalary int)
+DROP PROCEDURE IF EXISTS UpdateStatisticsOfFootballer;	# UpdateStatisticsOfFootballer(in club varchar(225), in gameDate DATE, in footballerName varchar(225), in footballerSurname varchar(225), in sGoals int, in fRedCards int, in fRellowCards int, in fPasses int, in fAssists int, in fOwnGoals int)
+
 
 delimiter //
+
+CREATE PROCEDURE UpdateStatisticsOfFootballer(in fClub varchar(225), in gameDate DATE, in footballerName varchar(225), 
+			in footballerSurname varchar(225), in fGoals int, in fRedCards int, in fYellowCards int, in fPasses int, in fAssists int, in fOwnGoals int)
+BEGIN
+	DECLARE club int;
+	DECLARE game int;
+    DECLARE footballer int;
+    
+    SET club = (SELECT Club.id
+				FROM Club
+				WHERE Club.name = fClub
+                LIMIT 1);
+    SET game = (SELECT FootballGame.id 
+				FROM FootballGame 
+				WHERE FootballGame.date = gameDate AND (FootballGame.club1Id = club OR FootballGame.club2Id = club)
+                LIMIT 1);
+	SET footballer = (SELECT Footballer.id 
+						FROM Footballer 
+						WHERE Footballer.name = footballerName AND Footballer.surname = footballerSurname
+                        LIMIT 1);
+	IF game IS NOT NULL AND footballer IS NOT NULL THEN
+		UPDATE Statistics
+        SET Statistics.goals = fGoals, Statistics.redCards = fredCards, 
+			Statistics.yellowCards = fYellowCards, Statistics.passes = fPasses, 
+            Statistics.assists = fAssists, Statistics.ownGoals = ownGoals
+		WHERE Statistics.footballerId = footballer AND Statistics.gameId = game;
+	END IF;
+
+END;//
+
 
 CREATE PROCEDURE DeleteGame(in firstTeam varchar(225), in secoundTeam varchar(225),
 	in sezonYear YEAR, in sezonRound varchar(225), in refereeName varchar(225), in refereeSurname varchar(225), in stadiumName varchar(225), in gameDate DATE)
@@ -66,7 +98,7 @@ END;//
 
 CREATE PROCEDURE StatisticsOfFootballer(in selectedName varchar(225), in selectedSurname varchar(225))
 BEGIN
-	SELECT Footballer.name, Footballer.surname, COALESCE(SUM(Statistics.goals), 0) AS Goals, COUNT(Statistics.footballerId) AS 'Matches played',
+	SELECT Footballer.name, Footballer.surname, COALESCE(SUM(Statistics.goals), 0) AS Goals, COALESCE(AVG(Statistics.goals), 0) AS 'Avg. Goals', COUNT(Statistics.footballerId) AS 'Matches played',
 	COALESCE(SUM(Statistics.redCards), 0) AS 'Red Cards', COALESCE(SUM(Statistics.yellowCards), 0) AS 'Yellow Cards', COALESCE(SUM(Statistics.assists), 0) AS Assists,
     COALESCE(SUM(Statistics.passes), 0) AS Passes, COALESCE(SUM(Statistics.ownGoals), 0) AS 'Own Goals'
     FROM Footballer
@@ -192,6 +224,7 @@ BEGIN
         WHERE FootballerInClub.footballerId = footballer AND FootballerInClub.clubId = club AND FootballerInClub.sezonId = sezon;
         
 	END IF;
+    
         
 END;//
 

@@ -1,5 +1,13 @@
 USE storm_database;
 
+DROP VIEW IF EXISTS StatisticsOfStadiums;
+CREATE VIEW StatisticsOfStadiums AS
+SELECT Stadium.name, Stadium.city, COUNT(FootballGame.id) AS 'Numbre of matches'
+	FROM Stadium
+    INNER JOIN FootballGame ON Stadium.id = FootballGame.stadiumId
+    GROUP BY Stadium.id
+    ORDER BY 'Number of matches' DESC;
+    
 DROP VIEW IF EXISTS StatisticsOfFootballers;
 CREATE VIEW StatisticsOfFootballers AS
 SELECT Footballer.name, Footballer.surname, COALESCE(SUM(Statistics.goals), 0) AS Goals, 
