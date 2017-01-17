@@ -25,6 +25,7 @@ async def get_players(cur, request):
 @utils.mysql_connection
 async def update_player_stats(cur, request):
     await request.post()
+    utils.validate_request(request)
     p = request.POST
     try:
         input_list = [
@@ -71,6 +72,7 @@ async def get_single_club_info(cur, request):
 @utils.mysql_connection
 async def add_new_club(cur, request):
     await request.post()
+    utils.validate_request(request)
     try:
         input_list = [
             request.POST['name'],
@@ -104,6 +106,7 @@ async def get_matches(cur, request):
 @utils.mysql_connection
 async def add_match(cur, request):
     await request.post()
+    utils.validate_request(request)
     try:
         input_list = [
             request.POST['club1'],
@@ -132,6 +135,7 @@ async def get_referees_stats(cur, request):
 @utils.mysql_connection
 async def add_referee(cur, request):
     await request.post()
+    utils.validate_request(request)
     try:
         input_dict = {
             'name': request.POST['name'],
@@ -150,6 +154,7 @@ async def add_referee(cur, request):
 @utils.mysql_connection
 async def add_player(cur, request):
     await request.post()
+    utils.validate_request(request)
     try:
         input_dict = {
             'name': request.POST['name'],
@@ -179,6 +184,13 @@ async def get_league_stats(cur, request):
                 r[j] = int(s)
         result[i] = r
     return web.json_response(result)
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def get_stadiums_stats(cur, request):
+    cur.execute("SELECT * FROM StatisticsOfStadiums")
+    return web.json_response(cur.fetchall())
 
 
 async def insert_into(cur, table, input_dict):

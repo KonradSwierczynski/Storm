@@ -17,6 +17,10 @@ import UpdateStats from "./UpdateStats.jsx";
 
 import LeagueStats from "./LeagueStats.jsx";
 
+import StadiumsStats from "./StadiumsStats.jsx";
+import StadiumsActions from "../actions/StadiumsActions.jsx";
+import StadiumsStore from "../stores/StadiumsStore.jsx";
+
 import LoginActions from "../actions/LoginActions.jsx";
 
 class App extends React.Component {
@@ -28,15 +32,23 @@ class App extends React.Component {
 
     componentDidMount() {
         AppStore.listen(this.onChange);
+        StadiumsStore.listen(this.stadiumChange);
     }
 
     componentWillUnmount() {
         AppStore.unlisten(this.onChange);
+        StadiumsStore.unlisten(this.stadiumChange);
     }
 
     onChange = (newState) => {
         this.setState(newState);
     };
+
+    stadiumChange = (newStadiums) => {
+        var s = this.state;
+        s.stadiums = newStadiums;
+        this.setState(s);
+    }
 
     render() {
         return (
@@ -119,6 +131,16 @@ class App extends React.Component {
                         AppActions.setShowGetLeagueStats(true);
                     }}>Show league stats</button>
                     { this.state.show_league_stats && <LeagueStats /> }
+                </div>
+
+                { /* ********************** STADIUMS *****************************/ }
+                <h2>Stadiums</h2>
+                <div>
+                    <button onClick={() => {
+                        StadiumsActions.loadStadiumsStats();
+                        AppActions.setShowStadiumsStats(true);
+                    }}>Show stadiums stats</button>
+                    { this.state.show_stadiums_stats && <StadiumsStats stats={this.state.stadiums} /> }
                 </div>
             </div>
         );

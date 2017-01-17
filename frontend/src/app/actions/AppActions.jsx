@@ -147,6 +147,12 @@ class AppActions {
             dispatch(bool);
         }
     }
+
+    setShowStadiumsStats = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
 }
 
 

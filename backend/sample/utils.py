@@ -2,6 +2,7 @@ from mysql.connector import connection
 from functools import wraps
 import time
 import logging
+from aiohttp import web
 
 mysql_config = {
     'user': 'storm_user',
@@ -14,6 +15,12 @@ mysql_config = {
 def get_sql_handle():
     global cnx
     return cnx
+
+
+def validate_request(request):
+    for item in list(request.POST.values()):
+        if any(c in item for c in [';', ')', '(', '"', '\\', '/', '\'', '=']):
+            raise web.HTTPBadRequest()
 
 
 def mysql_connection(fn):

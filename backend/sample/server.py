@@ -89,6 +89,9 @@ def init():
     # League
     app.router.add_route('GET', '/league/{league}', dbutils.get_league_stats)
 
+    # Stadiums
+    app.router.add_route('GET', '/stadiums', dbutils.get_stadiums_stats)
+
     logging.info("Backend server started")
     web.run_app(app)
     logging.info("Closing connection")

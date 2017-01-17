@@ -16,6 +16,7 @@ class AppStore {
             "show_match_add": false,
             "show_league_stats": false,
             "show_update_stats": false,
+            "show_stadiums_stats": false,
             "players": null,
             "clubs_stats": null,
             "referees_stats": null,
@@ -117,6 +118,12 @@ class AppStore {
     setShowGetLeagueStats(bool) {
         var s = this.state;
         s.show_league_stats = bool;
+        this.setState(s);
+    }
+
+    setShowStadiumsStats(bool) {
+        var s = this.state;
+        s.show_stadiums_stats = bool;
         this.setState(s);
     }
 }
