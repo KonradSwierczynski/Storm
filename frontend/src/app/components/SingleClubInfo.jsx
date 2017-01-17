@@ -60,7 +60,7 @@ class SingleClubInfo extends React.Component {
                         <table>
                             <tbody>
                                 { <InfoRow item={["Name", "City", "Budget", "Goals", "Red cards", "Yellow cards"]} /> }
-                                { <InfoRow item={this.state.info[0]}/> }
+                                { <InfoRow item={this.state.info}/> }
                             </tbody>
                         </table>
                     )

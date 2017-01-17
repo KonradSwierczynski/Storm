@@ -7,6 +7,7 @@ import NewPlayer from "./NewPlayer.jsx";
 import AllPlayers from "./AllPlayers.jsx"
 import RefereesStats from "./RefereesStats.jsx";
 import ClubsStats from "./ClubsStats.jsx";
+import ClubAddEntry from "./ClubAddEntry.jsx";
 import NewReferee from "./NewReferee.jsx";
 import SingleClubInfo from "./SingleClubInfo.jsx";
 
@@ -34,18 +35,6 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <div>Hello {this.state.content}!</div>
-                <div id="testButton">
-                <button onClick={() => {
-                    AppActions.printNew("trololo");
-                }}>Click Me</button>
-                </div>
-                <input type="text" id="textTest" defaultValue="Enter here..."/>
-                <button onClick={() => {
-                    AppActions.createTable(
-                        document.getElementById("textTest").value
-                    )
-                }}>Try Me</button>
                 <button onClick={() => {
                     LoginActions.logout();    
                 }}>Logout</button>
@@ -87,6 +76,12 @@ class App extends React.Component {
                         AppActions.setShowGetClubInfo(true);
                     }}>Show single club info</button>
                     { this.state.show_club_info && <SingleClubInfo /> }
+                </div>
+                <div>
+                    <button onClick={() => {
+                        AppActions.setShowAddNewClub(true);
+                    }}>Add new club</button>
+                    { this.state.show_club_add && <ClubAddEntry /> }
                 </div>
             </div>
         );

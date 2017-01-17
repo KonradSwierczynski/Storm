@@ -109,6 +109,12 @@ class AppActions {
             dispatch(bool);
         }
     }
+
+    setShowAddNewClub = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
 }
 
 
