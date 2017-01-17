@@ -35,13 +35,14 @@ BEGIN
 						FROM Footballer 
 						WHERE Footballer.name = footballerName AND Footballer.surname = footballerSurname
                         LIMIT 1);
+                    SELECT footballer, game, club;
 	IF game IS NOT NULL AND footballer IS NOT NULL THEN
 		UPDATE Statistics
         SET Statistics.goals = fGoals, Statistics.redCards = fredCards, 
 			Statistics.yellowCards = fYellowCards, Statistics.passes = fPasses, 
             Statistics.assists = fAssists, Statistics.ownGoals = ownGoals
 		WHERE Statistics.footballerId = footballer AND Statistics.gameId = game;
-	END IF;
+    END IF;
 
 END;//
 

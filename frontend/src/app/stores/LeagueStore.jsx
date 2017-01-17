@@ -5,14 +5,14 @@ import LeagueActions from "../actions/LeagueActions.jsx";
 class LeagueStore {
     constructor() {
         this.state = {
-            'stats': null;
+            'stats': null
         }
         this.bindActions(LeagueActions);
     }
 
     loadLeagueStats(stats) {
         var s = this.state;
-        v.stats = stats;
+        s.stats = stats;
         this.setState(s);
     }
 }

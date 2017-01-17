@@ -71,6 +71,7 @@ def init():
     # Players
     app.router.add_route('GET', '/allplayers', dbutils.get_players)
     app.router.add_route('POST', '/addplayer', dbutils.add_player)
+    app.router.add_route('POST', '/stats/player', dbutils.update_player_stats)
 
     # Referee
     app.router.add_route('GET', '/stats/referees', dbutils.get_referees_stats)

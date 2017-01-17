@@ -15,6 +15,7 @@ class AppStore {
             "show_matches": false,
             "show_match_add": false,
             "show_league_stats": false,
+            "show_update_stats": false,
             "players": null,
             "clubs_stats": null,
             "referees_stats": null,
@@ -46,7 +47,6 @@ class AppStore {
         s.add_referee = bool;
         this.setState(s);
     }
-
 
     setShowPlayers(bool) {
         var s = this.state;
@@ -105,6 +105,12 @@ class AppStore {
     setShowAddNewMatch(bool) {
         var s = this.state;
         s.show_match_add = bool;
+        this.setState(s);
+    }
+
+    setShowUpdateStats(bool) {
+        var s = this.state;
+        s.show_update_stats = bool;
         this.setState(s);
     }
 

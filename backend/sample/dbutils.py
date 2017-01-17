@@ -9,15 +9,35 @@ import sample.utils as utils
 @auth.auth_required
 @utils.mysql_connection
 async def get_players(cur, request):
-    cur.execute("SELECT * FROM Footballer")
-    result = [{
-        'dateOfBirth': str(p[1]),
-        'nationality': p[2],
-        'name': p[3],
-        'surname': p[4],
-        'playingPosition': p[5]
-    } for p in cur.fetchall()]
+    cur.execute("SELECT * FROM StatisticsOfFootballers")
+    result = cur.fetchall()
+    for i, r in enumerate(result):
+        r = list(r)
+        for j, s in enumerate(r):
+            if isinstance(s, decimal.Decimal):
+                r[j] = int(s)
+        result[i] = r
+    logging.info("ALL: " + str(result))
     return web.json_response(result)
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def update_player_stats(cur, request):
+    await request.post()
+    p = request.POST
+    try:
+        input_list = [
+            p['cName'], p['date'], p['pName'], p['pSurname'], p['goals'],
+            p['reds'], p['yellows'], p['passes'], p['assists'], p['owngoals']
+        ]
+    except KeyError:
+        raise web.HTTPBadRequest()
+    logging.info(input_list)
+    cur.callproc("UpdateStatisticsOfFootballer", input_list)
+    result = [r.fetchall() for r in cur.stored_results()]
+    logging.info("UPDATE: " + str(result))
+    return web.json_response({})
 
 
 @auth.auth_required

@@ -136,6 +136,12 @@ class AppActions {
         }
     }
 
+    setShowUpdateStats = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
+
     setShowGetLeagueStats = (bool) => {
         return (dispatch) => {
             dispatch(bool);

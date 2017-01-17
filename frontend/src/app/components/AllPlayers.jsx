@@ -18,11 +18,12 @@ var PlayerRow = React.createClass({
         var key = this.props.pkey;
         return (
             <tr>
-                <PlayerItem key={"name"+key} item={p.name}/>
-                <PlayerItem key={"surname"+key} item={p.surname}/>
-                <PlayerItem key={"nationality"+key} item={p.nationality}/>
-                <PlayerItem key={"playingPosition"+key} item={p.playingPosition}/>
-                <PlayerItem key={"dateOfBirth"+key} item={p.dateOfBirth}/>
+                <PlayerItem key={"name"+key} item={p[0]}/>
+                <PlayerItem key={"surname"+key} item={p[1]}/>
+                <PlayerItem key={"goals"+key} item={p[2]}/>
+                <PlayerItem key={"reds"+key} item={p[3]}/>
+                <PlayerItem key={"yellows"+key} item={p[4]}/>
+                <PlayerItem key={"assists"+key} item={p[5]}/>
             </tr>
         );
     }
@@ -41,13 +42,7 @@ class AllPlayers extends React.Component {
         if (players === null || players.length === 0) 
             return( <span><br />There are no players available :(</span> );
         header = <span>Table of all available players:</span>;
-        var titleRow = {
-            "name": "Name",
-            "surname": "Surname",
-            "nationality": "Nationality",
-            "playingPosition": "Position",
-            "dateOfBirth": "Birth date"
-        }
+        var titleRow = ["Name", "Surname", "Goals", "Reds", "Yellows", "Assists"]
         rows.push(<PlayerRow key={"titleRow"} items={titleRow} pkey={-1} />);
         for (var i = 0; i < players.length; i++) {
             rows.push(<PlayerRow key={"p"+i} items={players[i]} pkey={i} />);

@@ -10,8 +10,10 @@ import ClubsStats from "./ClubsStats.jsx";
 import ClubAddEntry from "./ClubAddEntry.jsx";
 import NewReferee from "./NewReferee.jsx";
 import SingleClubInfo from "./SingleClubInfo.jsx";
+
 import MatchesList from "./MatchesList.jsx";
 import MatchAddEntry from "./MatchAddEntry.jsx";
+import UpdateStats from "./UpdateStats.jsx";
 
 import LeagueStats from "./LeagueStats.jsx";
 
@@ -102,6 +104,12 @@ class App extends React.Component {
                         AppActions.setShowAddNewMatch(true);
                     }}>Add new match</button>
                     { this.state.show_match_add && <MatchAddEntry /> }
+                </div>
+                <div>
+                    <button onClick={() => {
+                        AppActions.setShowUpdateStats(true);
+                    }}>Update players stats</button>
+                    { this.state.show_update_stats && <UpdateStats /> }
                 </div>
 
                 { /* ************************** LEAGUES *************************** */ }
