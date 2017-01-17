@@ -12,9 +12,11 @@ class AppStore {
             "show_club_info": false,
             "show_club_add": false,
             "show_referees_stats": false,
+            "show_matches": false,
             "players": null,
             "clubs_stats": null,
-            "referees_stats": null
+            "referees_stats": null,
+            "matches": null
         };
         this.bindActions(AppActions);
     }
@@ -83,6 +85,18 @@ class AppStore {
     setShowAddNewClub(bool) {
         var s = this.state;
         s.show_club_add = bool;
+        this.setState(s);
+    }
+
+    setShowMatches(bool) {
+        var s = this.state;
+        s.show_matches = bool;
+        this.setState(s);
+    }
+
+    loadMatches(matches) {
+        var s = this.state;
+        s.matches = matches;
         this.setState(s);
     }
 }

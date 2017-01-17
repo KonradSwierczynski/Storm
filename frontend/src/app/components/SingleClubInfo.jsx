@@ -57,12 +57,29 @@ class SingleClubInfo extends React.Component {
                 <button onClick={() => { AppActions.setShowGetClubInfo(false); this.setInitialState()}}>Close</button>
                 { this.state.info !== null && this.state.info.length !== 0 && 
                     (
-                        <table>
-                            <tbody>
-                                { <InfoRow item={["Name", "City", "Budget", "Goals", "Red cards", "Yellow cards"]} /> }
-                                { <InfoRow item={this.state.info}/> }
-                            </tbody>
-                        </table>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <InfoRow item={["Name", "City", "Budget", "Goals", "Red cards", "Yellow cards"]} />
+                                    <InfoRow item={this.state.info.info}/>
+                                </tbody>
+                            </table>
+                            { this.state.info.players.length !== 0 ? (
+                                <div>
+                                    <span><br />Players in this club are</span>
+                                    <table>
+                                        <tbody>
+                                            { this.state.info.players.map((player, index) => {
+                                                return <tr key={"cp"+index}><td>{player[0]}</td><td>{player[1]}</td></tr>;
+                                            })}                                     
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : 
+                            (
+                                <span><br />There are no players in this club</span>
+                            )}
+                        </div>
                     )
                 }
                 { this.state.info !== null && this.state.info.length === 0 &&

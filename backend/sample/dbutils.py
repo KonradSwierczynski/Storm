@@ -2,6 +2,7 @@ import logging
 from aiohttp import web
 from aiohttp_auth import auth
 import decimal
+import datetime
 import sample.utils as utils
 
 
@@ -35,14 +36,14 @@ async def get_clubs_stats(cur, request):
 async def get_single_club_info(cur, request):
     club_name = request.match_info['club']
     cur.callproc("StatisticsOfClub", [club_name])
-    result = []
-    for r in cur.stored_results():
-        result += r.fetchall()
+    result = [r.fetchall() for r in cur.stored_results()]
     result = list(result[0])
     for i, r in enumerate(result):
         if isinstance(r, decimal.Decimal):
             result[i] = int(r)
-    return web.json_response(result)
+    cur.callproc("PlayersInClub", [club_name])
+    players = [p.fetchall() for p in cur.stored_results()]
+    return web.json_response({'info': result, 'players': players})
 
 
 @auth.auth_required
@@ -59,9 +60,23 @@ async def add_new_club(cur, request):
         ]
     except KeyError:
         raise web.HTTPBadRequest()
-    logging.info(input_list)
     cur.callproc("CreateClub", input_list)
     return web.json_response({})
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def get_matches(cur, request):
+    cur.callproc("FootballGames")
+    result = [g.fetchall() for g in cur.stored_results()][0]
+    logging.info(result)
+    for j, match in enumerate(result):
+        match = list(match)
+        for i, r in enumerate(match):
+            if isinstance(r, datetime.date):
+                match[i] = str(r)
+        result[j] = match
+    return web.json_response(result)
 
 
 @auth.auth_required

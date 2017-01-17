@@ -81,6 +81,9 @@ def init():
     app.router.add_route('GET', '/club/{club}', dbutils.get_single_club_info)
     app.router.add_route('POST', '/add/club', dbutils.add_new_club)
 
+    # Matches
+    app.router.add_route('GET', '/matches', dbutils.get_matches)
+
     logging.info("Backend server started")
     web.run_app(app)
     logging.info("Closing connection")

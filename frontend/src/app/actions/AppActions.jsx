@@ -115,6 +115,20 @@ class AppActions {
             dispatch(bool);
         }
     }
+
+    setShowMatches = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
+
+    loadMatches = () => {
+        return (dispatch) => {
+            $.get("/api/matches")
+                .done((matches) => { dispatch(matches); })
+                .fail(logoutIfNeeded);
+        };
+    }
 }
 
 

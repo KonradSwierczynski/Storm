@@ -10,6 +10,7 @@ import ClubsStats from "./ClubsStats.jsx";
 import ClubAddEntry from "./ClubAddEntry.jsx";
 import NewReferee from "./NewReferee.jsx";
 import SingleClubInfo from "./SingleClubInfo.jsx";
+import MatchesList from "./MatchesList.jsx";
 
 import LoginActions from "../actions/LoginActions.jsx";
 
@@ -63,6 +64,7 @@ class App extends React.Component {
                     }}>Show referees stats</button>
                     { this.state.show_referees_stats && <RefereesStats /> }
                 </div>
+
                 <h2>Clubs</h2>
                 <div>
                     <button onClick={() => {
@@ -82,6 +84,15 @@ class App extends React.Component {
                         AppActions.setShowAddNewClub(true);
                     }}>Add new club</button>
                     { this.state.show_club_add && <ClubAddEntry /> }
+                </div>
+
+                <h2>Matches</h2>
+                <div>
+                    <button onClick={() => {
+                        AppActions.loadMatches();
+                        AppActions.setShowMatches(true);
+                    }}>Show matches</button>
+                    { this.state.show_matches && <MatchesList matches={this.state.matches}/> }
                 </div>
             </div>
         );
