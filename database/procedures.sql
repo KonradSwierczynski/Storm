@@ -1,16 +1,16 @@
 USE storm_database;
 
-DROP PROCEDURE IF EXISTS StatisticsOfFootballer;	
-DROP PROCEDURE IF EXISTS StatisticsOfClub;
-DROP PROCEDURE IF EXISTS StatisticsOfReferee;
-DROP PROCEDURE IF EXISTS StatisticsOfLeague;
-DROP PROCEDURE IF EXISTS StatisticsOfLeagueInSezon;
-DROP PROCEDURE IF EXISTS CreateGame;
-DROP PROCEDURE IF EXISTS DeleteGame;
-DROP PROCEDURE IF EXISTS PlayersInClub;
-DROP PROCEDURE IF EXISTS CreateClub;
-DROP PROCEDURE IF EXISTS FootballGames;
-DROP PROCEDURE IF EXISTS UpdateFootballerInClub;
+DROP PROCEDURE IF EXISTS StatisticsOfFootballer;		# StatisticsOfFootballer(in selectedName varchar(225), in selectedSurname varchar(225))
+DROP PROCEDURE IF EXISTS StatisticsOfClub;				# StatisticsOfClub(in selectedName varchar(225))
+DROP PROCEDURE IF EXISTS StatisticsOfReferee;			# StatisticsOfReferee(in selectedName varchar(225), in selectedSurname varchar(225))
+DROP PROCEDURE IF EXISTS StatisticsOfLeague;			# StatisticsOfLeague(in selectedName varchar(225))
+DROP PROCEDURE IF EXISTS StatisticsOfLeagueInSezon;		# StatisticsOfLeagueInSezon(in selectedName varchar(225), in selectedYear YEAR, in selectedRound nvarchar(225))
+DROP PROCEDURE IF EXISTS CreateGame;					# CreateGame(in firstTeam varchar(225), in secoundTeam varchar(225), in sezonYear YEAR, in sezonRound varchar(225), in refereeName varchar(225), in refereeSurname varchar(225), in stadiumName varchar(225), in gameDate DATE)
+DROP PROCEDURE IF EXISTS DeleteGame;					# DeleteGame(in firstTeam varchar(225), in secoundTeam varchar(225), in sezonYear YEAR, in sezonRound varchar(225), in refereeName varchar(225), in refereeSurname varchar(225), in stadiumName varchar(225), in gameDate DATE)
+DROP PROCEDURE IF EXISTS PlayersInClub;					# PlayersInClub(in selectedName varchar(225))
+DROP PROCEDURE IF EXISTS CreateClub;					# CreateClub(in clubName varchar(225), in leagueName varchar(225), in fundation YEAR, in city varchar(225), in budget int)
+DROP PROCEDURE IF EXISTS FootballGames;					# FootballGames()
+DROP PROCEDURE IF EXISTS UpdateFootballerInClub;		# UpdateFootballerInClub(in fotballerName varchar(225), in fotballerSurname varchar(225), in clubName varchar(225),  in selectedYear YEAR, in selectedRound nvarchar(225), in newContractTo DATE, in newSalary int)
 
 delimiter //
 
@@ -24,13 +24,13 @@ BEGIN
     DECLARE referee int;
     DECLARE stadium int;
     DECLARE game int;
-    SET club1 = (SELECT Club.id FROM Club WHERE Club.name = firstTeam);
-    SET club2 = (SELECT Club.id FROM Club WHERE Club.name = secoundTeam);
-    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear);
-    SET referee = (SELECT Referee.id FROM Referee WHERE Referee.name = refereeName AND Referee.surname = refereeSurname);
-    SET stadium = (SELECT Stadium.id FROM Stadium WHERE Stadium.name = stadiumName);
+    SET club1 = (SELECT Club.id FROM Club WHERE Club.name = firstTeam LIMIT 1);
+    SET club2 = (SELECT Club.id FROM Club WHERE Club.name = secoundTeam LIMIT 1);
+    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear LIMIT 1);
+    SET referee = (SELECT Referee.id FROM Referee WHERE Referee.name = refereeName AND Referee.surname = refereeSurname LIMIT 1);
+    SET stadium = (SELECT Stadium.id FROM Stadium WHERE Stadium.name = stadiumName LIMIT 1);
     SET game = (SELECT FootballGame.id FROM FootballGame WHERE FootballGame.club1Id = club1 AND FootballGame.club2Id = club2 
-		AND FootballGame.date = gameDate AND FootballGame.refereeId = referee AND FootballGame.sezonId = sezon AND FootballGame.stadiumId = stadium);
+		AND FootballGame.date = gameDate AND FootballGame.refereeId = referee AND FootballGame.sezonId = sezon AND FootballGame.stadiumId = stadium LIMIT 1);
 	
     SET autocommit = 0;
 	START TRANSACTION;
@@ -52,13 +52,15 @@ BEGIN
     DECLARE sezon int;
     DECLARE referee int;
     DECLARE stadium int;
-    SET club1 = (SELECT Club.id FROM Club WHERE Club.name = firstTeam);
-    SET club2 = (SELECT Club.id FROM Club WHERE Club.name = secoundTeam);
-    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear);
-    SET referee = (SELECT Referee.id FROM Referee WHERE Referee.name = refereeName AND Referee.surname = refereeSurname);
-    SET stadium = (SELECT Stadium.id FROM Stadium WHERE Stadium.name = stadiumName);
-    INSERT INTO FootballGame (club1Id, club2Id, sezonId, refereeId, stadiumId, date) VALUES
-    (club1, club2, sezon, referee, stadium, gameDate);
+    SET club1 = (SELECT Club.id FROM Club WHERE Club.name = firstTeam LIMIT 1);
+    SET club2 = (SELECT Club.id FROM Club WHERE Club.name = secoundTeam LIMIT 1);
+    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear LIMIT 1);
+    SET referee = (SELECT Referee.id FROM Referee WHERE Referee.name = refereeName AND Referee.surname = refereeSurname LIMIT 1);
+    SET stadium = (SELECT Stadium.id FROM Stadium WHERE Stadium.name = stadiumName LIMIT 1);
+    IF club1 IS NOT NULL AND club2 IS NOT NULL AND sezon IS NOT NULL AND referee IS NOT NULL AND stadium IS NOT NULL THEN
+		INSERT INTO FootballGame (club1Id, club2Id, sezonId, refereeId, stadiumId, date) VALUES
+		(club1, club2, sezon, referee, stadium, gameDate);
+	END IF;
 END;//
 
 
