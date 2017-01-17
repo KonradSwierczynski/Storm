@@ -9,6 +9,8 @@ DROP PROCEDURE IF EXISTS CreateGame;
 DROP PROCEDURE IF EXISTS DeleteGame;
 DROP PROCEDURE IF EXISTS PlayersInClub;
 DROP PROCEDURE IF EXISTS CreateClub;
+DROP PROCEDURE IF EXISTS FootballGames;
+DROP PROCEDURE IF EXISTS UpdateFootballerInClub;
 
 delimiter //
 
@@ -85,6 +87,9 @@ CREATE PROCEDURE CreateClub(in clubName varchar(225), in leagueName varchar(225)
 BEGIN
 	DECLARE league int;
     SET league = (SELECT League.id FROM League WHERE League.name = leagueName LIMIT 1);
+    IF league IS NULL THEN
+		SET league = 1;
+	END IF;
     INSERT INTO Club (leagueId, fundationYear, name, city, budget) VALUES
     (league, fundation, clubName, city, budget);
 END;//
@@ -137,6 +142,17 @@ SELECT Footballer.name, Footballer.surname
     WHERE Club.name = selectedName;
 END;//
 
+
+CREATE PROCEDURE FootballGames()
+BEGIN
+SELECT DISTINCT club1.name, club2.name, Stadium.name, Stadium.city, FootballGame.date
+	FROM FootballGame
+    INNER JOIN Club club1 ON FootballGame.club1Id = club1.id
+	INNER JOIN Club club2 ON FootballGame.club2Id = club2.id
+    INNER JOIN Stadium ON FootballGame.stadiumId = Stadium.id;
+END;//
+
+
 CREATE PROCEDURE StatisticsOfLeagueInSezon(in selectedName varchar(225), in selectedYear YEAR, in selectedRound nvarchar(225))
 BEGIN
 SELECT Club.name, Club.city, Club.budget,League.name, COALESCE(SUM(Statistics.goals), 0) AS Goals, 
@@ -149,6 +165,33 @@ SELECT Club.name, Club.city, Club.budget,League.name, COALESCE(SUM(Statistics.go
     WHERE League.name = selectedName AND Sezon.round = selectedRound AND Sezon.year = selectedYear
     GROUP BY Club.id
     ORDER BY Goals DESC;
+END;//
+
+
+CREATE PROCEDURE UpdateFootballerInClub(in fotballerName varchar(225), in fotballerSurname varchar(225), in clubName varchar(225), 
+	in selectedYear YEAR, in selectedRound nvarchar(225), in newContractTo DATE, in newSalary int)
+BEGIN
+	DECLARE footballer int;
+    DECLARE club int;
+    DECLARE sezon int;
+    
+    SET footballer = (SELECT Footballer.id FROM Footballer WHERE Footballer.name = clubName AND Footballer.surname = fotballerSurname LIMIT 1);
+    SET club = (SELECT Club.id FROM Club WHERE Club.name = clubName LIMIT 1);
+    SET sezon = (SELECT Sezon.id FROM Sezon WHERE Sezon.round = sezonRound AND Sezon.year = sezonYear);
+    
+	IF (SELECT * FROM FootballerInClub WHERE FootballerInClub.footballerId = footballer 
+		AND FootballerInClub.clubId = club AND FootballerInClub.sezonId = sezon) IS NULL THEN
+        
+        INSERT INTO FootballerInClub (footballerId, clubId, sezonId, contractTo, salary) VALUES
+        (footballer, club, sezon, newContractTo, newSalary);
+        
+	ELSE
+		UPDATE FootballerInClub
+        SET contractTo = newContractTo, salary = newSalary
+        WHERE FootballerInClub.footballerId = footballer AND FootballerInClub.clubId = club AND FootballerInClub.sezonId = sezon;
+        
+	END IF;
+        
 END;//
 
 
