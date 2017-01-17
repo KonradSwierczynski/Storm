@@ -13,6 +13,8 @@ class AppStore {
             "show_club_add": false,
             "show_referees_stats": false,
             "show_matches": false,
+            "show_match_add": false,
+            "show_league_stats": false,
             "players": null,
             "clubs_stats": null,
             "referees_stats": null,
@@ -97,6 +99,18 @@ class AppStore {
     loadMatches(matches) {
         var s = this.state;
         s.matches = matches;
+        this.setState(s);
+    }
+
+    setShowAddNewMatch(bool) {
+        var s = this.state;
+        s.show_match_add = bool;
+        this.setState(s);
+    }
+
+    setShowGetLeagueStats(bool) {
+        var s = this.state;
+        s.show_league_stats = bool;
         this.setState(s);
     }
 }

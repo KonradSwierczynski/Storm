@@ -36,13 +36,14 @@ async def get_clubs_stats(cur, request):
 async def get_single_club_info(cur, request):
     club_name = request.match_info['club']
     cur.callproc("StatisticsOfClub", [club_name])
-    result = [r.fetchall() for r in cur.stored_results()]
-    result = list(result[0])
+    result = [r.fetchall() for r in cur.stored_results()][0][0]
+    result = list(result)
     for i, r in enumerate(result):
         if isinstance(r, decimal.Decimal):
             result[i] = int(r)
     cur.callproc("PlayersInClub", [club_name])
-    players = [p.fetchall() for p in cur.stored_results()]
+    players = [p.fetchall() for p in cur.stored_results()][0]
+    logging.info("RESULT: " + str(players))
     return web.json_response({'info': result, 'players': players})
 
 
@@ -77,6 +78,27 @@ async def get_matches(cur, request):
                 match[i] = str(r)
         result[j] = match
     return web.json_response(result)
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def add_match(cur, request):
+    await request.post()
+    try:
+        input_list = [
+            request.POST['club1'],
+            request.POST['club2'],
+            request.POST['seasonYear'],
+            request.POST['round'],
+            request.POST['refereeName'],
+            request.POST['refereeSurname'],
+            request.POST['stadium'],
+            request.POST['date']
+        ]
+    except KeyError:
+        raise web.HTTPBadRequest()
+    cur.callproc("CreateGame", input_list)
+    return web.json_response({})
 
 
 @auth.auth_required
@@ -121,6 +143,22 @@ async def add_player(cur, request):
         raise web.HTTPBadRequest()
     await insert_into(cur, "Footballer", input_dict)
     return web.json_response({})
+
+
+@auth.auth_required
+@utils.mysql_connection
+async def get_league_stats(cur, request):
+    lname = request.match_info['league']
+    cur.callproc("StatisticsOfLeague", [lname])
+    result = [r.fetchall() for r in cur.stored_results()][0]
+    result = list(result)
+    for i, r in enumerate(result):
+        r = list(r)
+        for j, s in enumerate(r):
+            if isinstance(s, decimal.Decimal):
+                r[j] = int(s)
+        result[i] = r
+    return web.json_response(result)
 
 
 async def insert_into(cur, table, input_dict):

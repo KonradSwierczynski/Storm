@@ -9,7 +9,7 @@ class AppActions {
         return (dispatch) => {
             $.get("/api/")
                 .done((data) => { dispatch(data); })
-                .fail((xhr) => { logoutIfNeeded(xhr); });
+                .fail(logoutIfNeeded);
         };
     };
 
@@ -23,7 +23,7 @@ class AppActions {
         return (dispatch) => {
             $.get("/api/allplayers")
                 .done((data) => { dispatch(data); })
-                .fail((xhr) => { logoutIfNeeded(xhr); });
+                .fail(logoutIfNeeded);
         };
     };
 
@@ -128,6 +128,18 @@ class AppActions {
                 .done((matches) => { dispatch(matches); })
                 .fail(logoutIfNeeded);
         };
+    }
+
+    setShowAddNewMatch = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
+    }
+
+    setShowGetLeagueStats = (bool) => {
+        return (dispatch) => {
+            dispatch(bool);
+        }
     }
 }
 

@@ -83,6 +83,10 @@ def init():
 
     # Matches
     app.router.add_route('GET', '/matches', dbutils.get_matches)
+    app.router.add_route('POST', '/matches/add', dbutils.add_match)
+
+    # League
+    app.router.add_route('GET', '/league/{league}', dbutils.get_league_stats)
 
     logging.info("Backend server started")
     web.run_app(app)
