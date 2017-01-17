@@ -87,11 +87,10 @@ CREATE PROCEDURE CreateClub(in clubName varchar(225), in leagueName varchar(225)
 BEGIN
 	DECLARE league int;
     SET league = (SELECT League.id FROM League WHERE League.name = leagueName LIMIT 1);
-    IF league IS NULL THEN
-		SET league = 1;
+    IF league IS NOT NULL THEN
+		INSERT INTO Club (leagueId, fundationYear, name, city, budget) VALUES
+		(league, fundation, clubName, city, budget);
 	END IF;
-    INSERT INTO Club (leagueId, fundationYear, name, city, budget) VALUES
-    (league, fundation, clubName, city, budget);
 END;//
 
 
